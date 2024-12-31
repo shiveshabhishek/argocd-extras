@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: keycloak
+  namespace: sa-keycloak
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - sakeycloak.cnoe.opsmx.org
+    secretName: keycloak-prod-tls
+  rules:
+    - host: sakeycloak.cnoe.opsmx.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 80

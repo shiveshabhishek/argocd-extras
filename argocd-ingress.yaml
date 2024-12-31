@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: sa-argocd-server-ingress
+  namespace: sa-argocd
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: saargocd.cnoe.opsmx.org
+    http:
+      paths:
+      - backend:
+          service:
+            name: argocd-server
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - saargocd.cnoe.opsmx.org
+    secretName: argocd-prod-tls
